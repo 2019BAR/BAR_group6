@@ -43,51 +43,49 @@ pacman::p_load(magrittr, d3heatmap)
 
 ###  Section-1 Loading the Data
 
+```{r}
+mvtWeek1 = read.csv("data/mvtWeek1.csv")
+```
+
 【1.1】How many rows of data (observations) are in this dataset?
 ```{r}
-#
-#
+nrow(mvtWeek1)
 ```
 
 檢查各欄位的資料格式
 ```{r}
-#
-#
+str(mvtWeek1)
 ```
 
 類別(Factor) versus 字串(Character)
 
 【1.2】How many variables are in this dataset?
 ```{r}
-#
-#
+ncol(mvtWeek1)
 ```
 
 
 【1.3】Using the "max" function, what is the maximum value of the variable "ID"?
 ```{r}
-#
-#
+max(mvtWeek1$ID)
 ```
 
 
 【1.4】 What is the minimum value of the variable "Beat"?
 ```{r}
-#
-#
+min(mvtWeek1$Beat)
 ```
 
 
 【1.5】 How many observations have value TRUE in the Arrest variable (this is the number of crimes for which an arrest was made)?
 ```{r}
-#
-#
+sum(mvtWeek1$Arrest == TRUE)
+#可以不用TURE，會自動計為1
 ```
 
 【1.6】 How many observations have a LocationDescription value of ALLEY?
 ```{r}
-#
-#
+sum(mvtWeek1$LocationDescription == "ALLEY")
 ```
 使用`sum()`和`mean()`來計算<z>邏輯運算</z>結果的<z>數量</z>和<z>比率</z>
 
@@ -103,23 +101,34 @@ pacman::p_load(magrittr, d3heatmap)
 + Hour:Minute Day/Month/Year
 
 ```{r}
-#
-#
+head(mvtWeek1$Date)
 ```
 
 ```{r}
-#
-#
+mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") #類別轉字串，字串轉date」
+ts = mvtWeek1$Date
+par(cex=0.7)
+hist(mvtWeek1$Date,"year",las=2,freq=T,xlab="")
+# 兩種date的做法
+#一種：ts = as.POSIXct(D$Date, format="%m/%d/%y %H:%M") 然後hist(ts.....)
+#另一種：mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") 
+
 ```
 
 <z>二維的`table()`</z>
 ```{r}
-#
-#
+table(format(ts,'%u'))
+table(format(ts,'%w'))
+table(format(ts,'%m'))
+table(week = format(ts,'%w'),month = format(ts,'%m'))
+# %u：星期1~7
+# %w：星期0（日）~6
 ```
+
 
 <z>二維矩陣的視覺化</z>
 ```{r fig.height=2.8, fig.width=8}
+table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix %>%d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
 #
 #
 ```
