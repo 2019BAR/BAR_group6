@@ -1,3 +1,4 @@
+
 pacman::p_load(googlesheets, dplyr, stringr)
 Q = gs_title("2019BAR期初問卷 (回應)") %>% gs_read() %>% setNames(c(
   'time','name','id','dept','tel','status','gsuite','g_datacamp','g_github',
