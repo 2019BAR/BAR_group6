@@ -107,12 +107,14 @@ head(mvtWeek1$Date)
 ```{r}
 mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") #類別轉字串，字串轉date」
 ts = mvtWeek1$Date
-par(cex=0.7)
-hist(mvtWeek1$Date,"year",las=2,freq=T,xlab="")
+par(mar=c(18,6,4,3),cex=0.7)
+hist(mvtWeek1$Date,"year",las=2,freq=T,xlab=" ")
 # 兩種date的做法
 #一種：ts = as.POSIXct(D$Date, format="%m/%d/%y %H:%M") 然後hist(ts.....)
 #另一種：mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") 
 
+max(mvtWeek1$Date)
+#為什麼會是2012-12-31????? 不是2014嗎
 ```
 
 <z>二維的`table()`</z>
@@ -128,32 +130,40 @@ table(week = format(ts,'%w'),month = format(ts,'%m'))
 
 <z>二維矩陣的視覺化</z>
 ```{r fig.height=2.8, fig.width=8}
-table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix %>%d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
-#
+table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix%>%d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
+#mac不能做
 #
 ```
 
 【2.2】 What is the month and year of the median date in our dataset? 
 ```{r}
+median(ts)
 #
 #
 ```
 
 【2.3】 In which month did the fewest motor vehicle thefts occur?
 ```{r}
-#
-#
+sort(table(format(ts,'%m')))
+#min(table(format(ts,'%m')))
+#單純用min：抓當月數字最小的數字
+#用which min：抓數字最小的當月
 ```
 
 【2.4】 On which weekday did the most motor vehicle thefts occur?
 ```{r}
-#
-#
+which.max(table(format(ts,'%w')))
+max(table(format(ts,'%w')))
+sort(table(format(ts,'%w')))
+#5是星期幾、6是在table的位置（照順序算）
+#降冪排序：decreasing = T
 ```
 
 【2.5】 Which month has the largest number of motor vehicle thefts for which an arrest was made?
 ```{r}
-#
+which.max(table(format(ts,'%m')))
+#sort(table(format(ts,'%m')))
+#10月
 #
 ```
 
@@ -165,31 +175,42 @@ table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix %>%d3heatmap(F,
 
 【3.1】 (a) In general, does it look like crime increases or decreases from 2002 - 2012? (b) In general, does it look like crime increases or decreases from 2005 - 2008? (c) In general, does it look like crime increases or decreases from 2009 - 2011?
 ```{r}
-#
-#
+par(mar=c(12,6,4,2),cex=0.8) 
+hist(ts,'year',las=2)
+#02-12：減少
+#05-08：減少
+#09-11：增加一咪咪
+#怎麼調電腦顯示？？？？？？？？？？
 ```
 
 【3.2】 Does it look like there were more crimes for which arrests were made in the first half of the time period or the second half of the time period?
 ```{r}
-#
-#
+table(ts > as.POSIXct('2007-01-01'))
+
+#有沒有辦法直接算half of the year？
+#前半時期是105566 較多犯罪被捕數
+#為什麼數字跟老師的不一樣？？？？？？？？？？
 ```
 
 【3.3】 For what proportion of motor vehicle thefts in 2001 was an arrest made?
 ```{r}
-#
-#
+table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2001) %>% prop.table(2)%>%round(3)
+#==很重要
+#TRUE：2001的資料
+#false：不是2001的資料
+#0.104
 ```
 
 【3.4】 For what proportion of motor vehicle thefts in 2007 was an arrest made?
 ```{r}
-#
-#
+table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2007) %>% prop.table(2)%>%round(3)
+#0.085
 ```
 
 【3.5】 For what proportion of motor vehicle thefts in 2012 was an arrest made?
 ```{r}
-#
+table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2012) %>% prop.table(2)%>%round(3)
+#0.039
 #
 ```
 
@@ -202,31 +223,38 @@ table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix %>%d3heatmap(F,
 【4.1】 Which locations are the top five locations for motor vehicle thefts, excluding the "Other" category? You should select 5 of the following options.
 
 ```{r}
-#
+table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6)
+#如何直接排除other
 #
 ```
 
 【4.2】 How many observations are in Top5?
 ```{r}
-#
-#
+(top5 = names(table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6))[-3])
+sum(mvtWeek1$LocationDescription %in% top5)
+#names到底是抓名字還是命名？
 ```
 
 【4.3】 One of the locations has a much higher arrest rate than the other locations. Which is it? 
 ```{r}
+TOP5=subset(mvtWeek1,LocationDescription %in% top5)
+tapply(TOP5$Arrest, TOP5$LocationDescription,mean) %>% sort(decreasing = T)
+
 #
 #
 ```
 
 【4.4】 On which day of the week do the most motor vehicle thefts at gas stations happen?
 ```{r}
-#
-#
+table(mvtWeek1$LocationDescription=='GAS STATION',format(ts,'%u')) 
+#如果寫這樣要怎麼排序？
+#6
 ```
 
 【4.5】 On which day of the week do the fewest motor vehicle thefts in residential driveways happen?
 ```{r}
-#
+table(mvtWeek1$LocationDescription=="DRIVEWAY - RESIDENTIAL",format(ts,'%u'))
+#6
 #
 ```
 
