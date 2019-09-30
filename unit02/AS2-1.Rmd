@@ -105,16 +105,22 @@ head(mvtWeek1$Date)
 ```
 
 ```{r}
-mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") #類別轉字串，字串轉date」
-ts = mvtWeek1$Date
-par(mar=c(18,6,4,3),cex=0.7)
-hist(mvtWeek1$Date,"year",las=2,freq=T,xlab=" ")
+
+#用date:不包含時間(分秒時區)
+#posixct:標準中原時間(包含分秒時區,tz="時區代碼",否則默認中原)
+#若有分秒卻用date會有加減一年的問題(熱圖無法顯示)
+#類別轉字串，字串轉date
+#mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M")
+#ts = mvtWeek1$Date
+#par(mar=c(18,6,4,3),cex=0.7)
+#hist(mvtWeek1$Date,"year",las=2,freq=T,xlab=" ")
 # 兩種date的做法
 #一種：ts = as.POSIXct(D$Date, format="%m/%d/%y %H:%M") 然後hist(ts.....)
 #另一種：mvtWeek1$Date = as.character(mvtWeek1$Date) %>% as.Date("%m/%d/%y %H:%M") 
 
-max(mvtWeek1$Date)
-#為什麼會是2012-12-31????? 不是2014嗎
+ts = as.POSIXct(mvtWeek1$Date, format="%m/%d/%y %H:%M")
+par(cex=0.7)
+hist(ts,"year",las=2,freq=T,xlab="")
 ```
 
 <z>二維的`table()`</z>
@@ -130,16 +136,14 @@ table(week = format(ts,'%w'),month = format(ts,'%m'))
 
 <z>二維矩陣的視覺化</z>
 ```{r fig.height=2.8, fig.width=8}
-table(format(ts,"%u"), format(ts,"%H")) %>% as.data.frame.matrix%>%d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
-#mac不能做
-#
+table(format(ts,"%u"), format(ts,"%H")) %>% 
+  as.data.frame.matrix %>% 
+  d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
 ```
 
 【2.2】 What is the month and year of the median date in our dataset? 
 ```{r}
 median(ts)
-#
-#
 ```
 
 【2.3】 In which month did the fewest motor vehicle thefts occur?
@@ -180,16 +184,16 @@ hist(ts,'year',las=2)
 #02-12：減少
 #05-08：減少
 #09-11：增加一咪咪
-#怎麼調電腦顯示？？？？？？？？？？
 ```
 
 【3.2】 Does it look like there were more crimes for which arrests were made in the first half of the time period or the second half of the time period?
 ```{r}
 table(ts > as.POSIXct('2007-01-01'))
 
-#有沒有辦法直接算half of the year？
-#前半時期是105566 較多犯罪被捕數
-#為什麼數字跟老師的不一樣？？？？？？？？？？
+#時間沒有辦法直接算half of the year
+#統計值會對數據做計算
+
+
 ```
 
 【3.3】 For what proportion of motor vehicle thefts in 2001 was an arrest made?
@@ -223,8 +227,8 @@ table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2012) %>% prop.table(2)%>%round(3)
 【4.1】 Which locations are the top five locations for motor vehicle thefts, excluding the "Other" category? You should select 5 of the following options.
 
 ```{r}
-table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6)
-#如何直接排除other
+#table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6)
+table(mvtWeek1$LocationDescription) %>% {.[names(.)!="OTHER"]} %>% sort(decreasing = TRUE) %>% head(5)
 #
 ```
 
@@ -232,22 +236,22 @@ table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6)
 ```{r}
 (top5 = names(table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6))[-3])
 sum(mvtWeek1$LocationDescription %in% top5)
-#names到底是抓名字還是命名？
+#names抓名字:names(mvtWeek1)
+#names改名:names(mvtWeek1)[10]="lat"
+#names(mvtWeek1)[10,11]=c("lat","long")
 ```
 
 【4.3】 One of the locations has a much higher arrest rate than the other locations. Which is it? 
 ```{r}
 TOP5=subset(mvtWeek1,LocationDescription %in% top5)
 tapply(TOP5$Arrest, TOP5$LocationDescription,mean) %>% sort(decreasing = T)
-
-#
-#
+#GAS STATION
 ```
 
 【4.4】 On which day of the week do the most motor vehicle thefts at gas stations happen?
 ```{r}
-table(mvtWeek1$LocationDescription=='GAS STATION',format(ts,'%u')) 
-#如果寫這樣要怎麼排序？
+table(mvtWeek1$LocationDescription=='GAS STATION',format(ts,'%u'))[2,] %>% sort
+
 #6
 ```
 
@@ -255,7 +259,6 @@ table(mvtWeek1$LocationDescription=='GAS STATION',format(ts,'%u'))
 ```{r}
 table(mvtWeek1$LocationDescription=="DRIVEWAY - RESIDENTIAL",format(ts,'%u'))
 #6
-#
 ```
 
 
