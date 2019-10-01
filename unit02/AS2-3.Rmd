@@ -160,8 +160,9 @@ tapply(is.na(CPS$MetroAreaCode), CPS$State, mean) %>% {abs(.-0.3)}  %>% sort
 
 Which state has the largest proportion of non-metropolitan interviewees, ignoring states where all interviewees were non-metropolitan?
 ```{r}
-tapply(is.na(CPS$MetroAreaCode), CPS$State, mean) %>% sort
+tapply(is.na(CPS$MetroAreaCode), CPS$State, mean) %>% {.[.!=1]} %>% sort
 # Montana有最高比例的受訪者居住於非都會區(全部受訪者皆住在非都會區的地區除外)
+#{.[.!=1]}：除去比率=1的 再排序
 ```
 
 <br><br><br>
