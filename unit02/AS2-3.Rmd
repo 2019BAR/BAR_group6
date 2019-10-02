@@ -154,7 +154,7 @@ tapply(is.na(CPS$MetroAreaCode), CPS$Region, mean) %>% sort
 __§ 2.5__ Which state has a proportion of interviewees living in a non-metropolitan area closest to 30%?
 ```{r}
 tapply(is.na(CPS$MetroAreaCode), CPS$State, mean) %>% {abs(.-0.3)}  %>% sort
-# Florida的受訪者居住於非都會區的比例接近30%
+# Wisconsin的受訪者居住於非都會區的比例接近30%
 #{abs(.-0.3)} : 每個比率減0.3再取絕對值
 ```
 
@@ -162,7 +162,7 @@ Which state has the largest proportion of non-metropolitan interviewees, ignorin
 ```{r}
 tapply(is.na(CPS$MetroAreaCode), CPS$State, mean) %>% {.[.!=1]} %>% sort
 # Montana有最高比例的受訪者居住於非都會區(全部受訪者皆住在非都會區的地區除外)
-#{.[.!=1]}：除去比率=1的 再排序
+# {.[.!=1]}：除去比率=1的 再排序
 ```
 
 <br><br><br>
@@ -208,7 +208,6 @@ __§ 3.4__ Which metropolitan area has the highest proportion of interviewees of
 ```{r}
 tapply(CPS$Hispanic, CPS$MetroArea, mean) %>% sort %>% tail
 # Laredo有最高比例的西班牙裔受訪者
-#
 ```
 
 __§ 3.5__ Determine the number of metropolitan areas in the United States from which at least 20% of interviewees are Asian.
@@ -239,7 +238,6 @@ How many interviewees have a missing value for the new `Country` variable?
 ```{r}
 sum(is.na(CountryMap))
 # 0個missing value
-#
 ```
 
 __§ 4.2__ Among all interviewees born outside of North America, which country was the most common place of birth?
@@ -269,8 +267,7 @@ tapply(CPS$Country=="Brazil", CPS$MetroArea, sum) %>% sort %>% tail
 In Somalia?
 ```{r}
 tapply(CPS$Country=="Somalia", CPS$MetroArea, sum) %>% sort %>% tail
-# Phoenix-Mesa-Scottsdale和St. Cloud有最多生於Somalia的受訪者
-#
+# Phoenix-Mesa-Scottsdale和St.Cloud有最多生於Somalia的受訪者
 ```
 
 <br><br><br>

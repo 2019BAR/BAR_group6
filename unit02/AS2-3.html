@@ -440,7 +440,7 @@ summary {
 
 <h1 class="title toc-ignore">AS2-3: 美國的人口統計和就業資料</h1>
 <h4 class="author">第 6 組</h4>
-<h4 class="date">2019-10-02 11:29:17</h4>
+<h4 class="date">2019-10-02 12:56:06</h4>
 
 </div>
 
@@ -713,10 +713,10 @@ District of Columbia           New Jersey         Rhode Island              Verm
            0.3943089            0.4025000            0.4373860            0.4558552 
              Montana               Alaska              Wyoming 
            0.5360791            0.7000000            0.7000000 </code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># Florida的受訪者居住於非都會區的比例接近30%</span></a>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># Wisconsin的受訪者居住於非都會區的比例接近30%</span></a>
 <a class="sourceLine" id="cb43-2" title="2"><span class="co">#{abs(.-0.3)} : 每個比率減0.3再取絕對值</span></a></code></pre></div>
 <p>Which state has the largest proportion of non-metropolitan interviewees, ignoring states where all interviewees were non-metropolitan?</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">tapply</span>(<span class="kw">is.na</span>(CPS<span class="op">$</span>MetroAreaCode), CPS<span class="op">$</span>State, mean) <span class="op">%&gt;%</span><span class="st"> </span>sort</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">tapply</span>(<span class="kw">is.na</span>(CPS<span class="op">$</span>MetroAreaCode), CPS<span class="op">$</span>State, mean) <span class="op">%&gt;%</span><span class="st"> </span>{.[.<span class="op">!=</span><span class="dv">1</span>]} <span class="op">%&gt;%</span><span class="st"> </span>sort</a></code></pre></div>
 <pre><code>District of Columbia           New Jersey         Rhode Island           California 
              0.00000              0.00000              0.00000              0.02048 
              Florida        Massachusetts             Maryland             New York 
@@ -741,9 +741,10 @@ District of Columbia           New Jersey         Rhode Island              Verm
              0.56875              0.58132              0.59832              0.65238 
          Mississippi         South Dakota         North Dakota        West Virginia 
              0.69431              0.70250              0.73739              0.75586 
-             Montana               Alaska              Wyoming 
-             0.83608              1.00000              1.00000 </code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="co"># Montana有最高比例的受訪者居住於非都會區(全部受訪者皆住在非都會區的地區除外)</span></a></code></pre></div>
+             Montana 
+             0.83608 </code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="co"># Montana有最高比例的受訪者居住於非都會區(全部受訪者皆住在非都會區的地區除外)</span></a>
+<a class="sourceLine" id="cb46-2" title="2"><span class="co"># {.[.!=1]}：除去比率=1的 再排序</span></a></code></pre></div>
 <p><br><br><br></p>
 </div>
 <div id="section-3-integrating-metropolitan-area-data" class="section level3">
@@ -787,8 +788,7 @@ New York-Northern New Jersey-Long Island, NY-NJ-PA
                     0.6442                     0.6869                     0.7910 
  Brownsville-Harlingen, TX McAllen-Edinburg-Pharr, TX                 Laredo, TX 
                     0.7975                     0.9487                     0.9663 </code></pre>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="co"># Laredo有最高比例的西班牙裔受訪者</span></a>
-<a class="sourceLine" id="cb63-2" title="2"><span class="co">#</span></a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="co"># Laredo有最高比例的西班牙裔受訪者</span></a></code></pre></div>
 <p><strong>§ 3.5</strong> Determine the number of metropolitan areas in the United States from which at least 20% of interviewees are Asian.</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1"><span class="kw">tapply</span>(CPS<span class="op">$</span>Race <span class="op">==</span><span class="st"> &quot;Asian&quot;</span>, CPS<span class="op">$</span>MetroArea, mean) <span class="op">%&gt;%</span><span class="st"> </span>sort <span class="op">%&gt;%</span><span class="st"> </span>tail</a></code></pre></div>
 <pre><code>                 Warner Robins, GA                         Fresno, CA 
@@ -815,8 +815,7 @@ New York-Northern New Jersey-Long Island, NY-NJ-PA
 <p>How many interviewees have a missing value for the new <code>Country</code> variable?</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="kw">sum</span>(<span class="kw">is.na</span>(CountryMap))</a></code></pre></div>
 <pre><code>[1] 0</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="co"># 0個missing value</span></a>
-<a class="sourceLine" id="cb73-2" title="2"><span class="co">#</span></a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="co"># 0個missing value</span></a></code></pre></div>
 <p><strong>§ 4.2</strong> Among all interviewees born outside of North America, which country was the most common place of birth?</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">table</span>(CPS<span class="op">$</span>Country) <span class="op">%&gt;%</span><span class="st"> </span>sort <span class="op">%&gt;%</span><span class="st"> </span>tail</a></code></pre></div>
 <pre><code>
@@ -855,8 +854,7 @@ Miami-Fort Lauderdale-Miami Beach, FL        Boston-Cambridge-Quincy, MA-NH
                              1                              1 
    Phoenix-Mesa-Scottsdale, AZ                  St. Cloud, MN 
                              7                              7 </code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="co"># Phoenix-Mesa-Scottsdale和St. Cloud有最多生於Somalia的受訪者</span></a>
-<a class="sourceLine" id="cb88-2" title="2"><span class="co">#</span></a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="co"># Phoenix-Mesa-Scottsdale和St.Cloud有最多生於Somalia的受訪者</span></a></code></pre></div>
 <p><br><br><br></p>
 </div>
 
