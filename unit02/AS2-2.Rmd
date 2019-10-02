@@ -110,10 +110,6 @@ ProcterGamble = read.csv("data/ProcterGambleStock.csv"),
 CocaCola = read.csv("data/CocaColaStock.csv"),
 Boeing = read.csv("data/BoeingStock.csv")
 )
-
-
-#
-#
 ```
 
 ```{r}
@@ -133,35 +129,30 @@ __§ 1.4__ What is the mean stock price of IBM over this time period?
 ```{r}
 mean(IBM$StockPrice)
 #144.4
-#
 ```
 
 __§ 1.5__ What is the minimum stock price of General Electric (GE) over this time period?
 ```{r}
 min(GE$StockPrice)
 #9.294
-#
 ```
 
 __§ 1.6__ What is the maximum stock price of Coca-Cola over this time period?
 ```{r}
 max(CocaCola$StockPrice)
 #146.6
-#
 ```
 
 __§ 1.7__ What is the median stock price of Boeing over this time period?
 ```{r}
 median(Boeing$StockPrice)
-# 44.88
-#
+#44.88
 ```
 
 __§ 1.8__ What is the standard deviation of the stock price of Procter & Gamble over this time period?
 ```{r}
 sd(ProcterGamble$StockPrice)
 #18.19
-#
 ```
 
 <span style="font-size:20px">`r "\U1F4A1"`</span>
@@ -196,13 +187,11 @@ abline(v=as.Date(c("2000-03-01","1983-01-01","1984-01-01")),col="cyan",lty=2)
 __§ 2.3__ (a) Around 1983, the stock for one of these companies (Coca-Cola or Procter and Gamble) was going up, while the other was going down. Which one was going up? 
 ```{r}
 #Cococola
-#
 ```
 
 (b) In the time period shown in the plot, which stock generally has lower values?
 ```{r}
 #Boeing
-#
 ```
 
 
@@ -219,7 +208,6 @@ lines(IBM$Date,IBM$StockPrice,type = 'l',col='blue')
 lines(ProcterGamble$Date,ProcterGamble$StockPrice,type = 'l',col='gray')
 abline(v=as.Date(c("2000-03-01")),col="cyan",lty=2)
 #GE
-#
 ```
 
 __§ 3.2__ Which stock reaches the highest value in the time period 1995-2005?
