@@ -168,7 +168,6 @@ sort(table(format(ts,'%w')))
 which.max(table(format(ts,'%m')))
 #sort(table(format(ts,'%m')))
 #10月
-#
 ```
 
 <br><br>
@@ -215,7 +214,6 @@ table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2007) %>% prop.table(2)%>%round(3)
 ```{r}
 table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2012) %>% prop.table(2)%>%round(3)
 #0.039
-#
 ```
 
 <br><br>
@@ -229,7 +227,6 @@ table(mvtWeek1$Arrest==TRUE,format(ts,'%Y')==2012) %>% prop.table(2)%>%round(3)
 ```{r}
 #table(mvtWeek1$LocationDescription) %>% sort(decreasing = TRUE) %>% head(6)
 table(mvtWeek1$LocationDescription) %>% {.[names(.)!="OTHER"]} %>% sort(decreasing = TRUE) %>% head(5)
-#
 ```
 
 【4.2】 How many observations are in Top5?
